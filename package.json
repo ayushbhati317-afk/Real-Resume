@@ -4,6 +4,6 @@
   "private": true,
   "description": "ATS resume checker with a backend-powered AI career assistant.",
   "scripts": {
-    "start": "node server.js"
+    "start": "node local-server.js"
   }
 }

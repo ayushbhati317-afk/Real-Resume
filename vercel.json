@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/assistant",
+      "destination": "/api/assistant"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
+}
