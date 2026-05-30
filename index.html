@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATS Resume Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Resume intelligence</p>
+        <h1>ATS Resume Checker</h1>
+        <p class="intro">
+          Upload a formatted resume or paste text to check keyword match, section quality,
+          ATS readability, and recruiter-friendly improvements.
+        </p>
+        <div class="trust-row" aria-label="Trust signals">
+          <span>Runs locally in your browser</span>
+          <span>No account required</span>
+          <span>Transparent scoring</span>
+        </div>
+      </div>
+      <div class="score-card" aria-live="polite">
+        <span class="score-label">ATS Score</span>
+        <strong id="scoreValue">0</strong>
+        <span id="scoreStatus">Add your resume to begin</span>
+      </div>
+    </section>
+
+    <section class="phase-strip" aria-label="Checker phases">
+      <article class="phase active">
+        <span>01</span>
+        <h2>Upload</h2>
+        <p>Import PDF, Word, image, or text.</p>
+      </article>
+      <article class="phase">
+        <span>02</span>
+        <h2>Extract</h2>
+        <p>Read resume content in-browser.</p>
+      </article>
+      <article class="phase">
+        <span>03</span>
+        <h2>Analyze</h2>
+        <p>Score structure, skills, and keywords.</p>
+      </article>
+      <article class="phase">
+        <span>04</span>
+        <h2>Improve</h2>
+        <p>Rewrite with stronger ATS signals.</p>
+      </article>
+    </section>
+
+    <section class="workspace">
+      <form class="checker-panel" id="checkerForm">
+        <div class="panel-topline">
+          <div>
+            <h2>Resume Check</h2>
+            <p>Upload a formatted resume or paste text manually.</p>
+          </div>
+          <button type="button" class="secondary compact" id="sampleButton">Try sample</button>
+        </div>
+
+        <div class="document-intake">
+          <label class="file-drop" for="resumeFile" id="dropZone">
+            <input id="resumeFile" type="file" accept=".pdf,.docx,.doc,.txt,.md,.rtf,.html,.htm,.csv,.jpg,.jpeg,.png,.webp,.bmp">
+            <span>Drop resume here or browse</span>
+            <small id="fileStatus">Supports PDF, DOCX, TXT, RTF, HTML, CSV, JPG, PNG, WEBP, BMP</small>
+          </label>
+          <div class="format-pills" aria-label="Supported resume formats">
+            <span>PDF</span>
+            <span>DOCX</span>
+            <span>Images with OCR</span>
+            <span>Text / HTML / CSV</span>
+          </div>
+          <div class="extract-status" aria-live="polite">
+            <span id="extractStatus">Ready to import a resume.</span>
+            <div class="extract-progress"><div id="extractProgress"></div></div>
+          </div>
+        </div>
+
+        <label for="resumeText">
+          Extracted resume text
+          <span>Edit the extracted content before scoring if needed.</span>
+        </label>
+        <textarea id="resumeText" placeholder="Paste your resume here..." required></textarea>
+        <div class="text-stats">
+          <span id="resumeWords">0 words</span>
+          <span id="resumeQuality">Waiting for resume text</span>
+        </div>
+
+        <label for="jobText">
+          Job description
+          <span>Generate a realistic job description or paste the target posting.</span>
+        </label>
+        <div class="job-builder" aria-label="Automated job description builder">
+          <div class="builder-grid">
+            <label for="jobTitle">
+              Job title
+              <input id="jobTitle" type="text" placeholder="Data Analyst">
+            </label>
+            <label for="companyName">
+              Company or industry
+              <input id="companyName" type="text" placeholder="Retail analytics company">
+            </label>
+            <label for="jobLevel">
+              Level
+              <select id="jobLevel">
+                <option>Entry-level</option>
+                <option selected>Mid-level</option>
+                <option>Senior</option>
+                <option>Lead</option>
+              </select>
+            </label>
+            <label for="jobSkills">
+              Key skills
+              <input id="jobSkills" type="text" placeholder="SQL, Python, Tableau, communication">
+            </label>
+          </div>
+          <div class="actions compact-actions">
+            <button type="button" class="secondary" id="generateJobButton">Generate job description</button>
+            <button type="button" class="secondary" id="enhanceJobButton">Improve pasted description</button>
+          </div>
+        </div>
+        <textarea id="jobText" placeholder="Paste the job description here..." required></textarea>
+        <div class="text-stats">
+          <span id="jobWords">0 words</span>
+          <span id="jobQuality">Waiting for job description</span>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Check resume</button>
+          <button type="button" class="secondary" id="copyButton">Copy tips</button>
+          <button type="button" class="secondary" id="downloadButton">Download report</button>
+          <button type="button" class="secondary" id="clearButton">Clear</button>
+        </div>
+      </form>
+
+      <aside class="results-panel">
+        <div class="trust-card">
+          <h2>Privacy Promise</h2>
+          <p>Your resume content is processed in the browser. PDF, Word, and image reading use browser-side libraries; your document is not uploaded to this website's server.</p>
+        </div>
+
+        <div class="result-block">
+          <h2>Match Summary</h2>
+          <div class="meter">
+            <div id="meterFill"></div>
+          </div>
+          <p id="summaryText">Your results will appear after analysis.</p>
+        </div>
+
+        <div class="result-grid">
+          <article>
+            <span id="keywordScore">0%</span>
+            <p>Keyword Match</p>
+          </article>
+          <article>
+            <span id="sectionScore">0%</span>
+            <p>Section Health</p>
+          </article>
+          <article>
+            <span id="formatScore">0%</span>
+            <p>ATS Format</p>
+          </article>
+        </div>
+
+        <details class="score-details" open>
+          <summary>How the score is calculated</summary>
+          <ul>
+            <li>50% keyword match against the job description.</li>
+            <li>25% resume section coverage.</li>
+            <li>25% ATS-friendly formatting checks.</li>
+            <li>Formatted files are converted to text first, then scored.</li>
+          </ul>
+        </details>
+
+        <div class="result-block">
+          <h2>Readiness Checklist</h2>
+          <div class="checklist" id="checklist">
+            <span>Run a check to see readiness items.</span>
+          </div>
+        </div>
+
+        <div class="result-block">
+          <h2>Missing Keywords</h2>
+          <div class="keyword-list" id="missingKeywords">
+            <span>No analysis yet</span>
+          </div>
+        </div>
+
+        <div class="result-block">
+          <h2>Recommendations</h2>
+          <ul class="recommendations" id="recommendations">
+            <li>Paste your content and run the checker to receive suggestions.</li>
+          </ul>
+        </div>
+
+        <div class="result-block">
+          <h2>Next Phase</h2>
+          <p id="nextStepText">Start by adding your resume and target job description.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="assistant-panel" aria-label="Career AI assistant">
+      <div class="assistant-head">
+        <div>
+          <p class="eyebrow">Career assistant</p>
+          <h2>Ask about jobs, interviews, keywords, or resume strategy</h2>
+          <p>This assistant uses your current resume text, job description, and ATS score to give practical job-search guidance.</p>
+        </div>
+        <div class="assistant-badge">Context aware</div>
+      </div>
+
+      <div class="prompt-chips" aria-label="Assistant quick prompts">
+        <button type="button" data-prompt="What jobs fit my resume?">Jobs that fit me</button>
+        <button type="button" data-prompt="How can I improve my resume for this job?">Improve my resume</button>
+        <button type="button" data-prompt="What interview questions should I prepare for?">Interview prep</button>
+        <button type="button" data-prompt="What skills should I learn next?">Skills to learn</button>
+      </div>
+
+      <div class="assistant-chat" id="assistantChat" aria-live="polite">
+        <div class="chat-message assistant">
+          <strong>Assistant</strong>
+          <p>Upload your resume, generate or paste a job description, then ask me for role-fit advice, missing skills, interview prep, or resume rewrites.</p>
+        </div>
+      </div>
+
+      <div class="assistant-input-row">
+        <input id="assistantInput" type="text" placeholder="Ask: What job should I target with this resume?">
+        <button type="button" id="askAssistantButton">Ask assistant</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

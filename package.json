@@ -1,0 +1,9 @@
+{
+  "name": "ats-resume-checker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ATS resume checker with a backend-powered AI career assistant.",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
