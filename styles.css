@@ -1,16 +1,19 @@
 :root {
-  --ink: #17212b;
-  --muted: #5d6b78;
-  --line: #d9e1e8;
-  --paper: #f4f7f6;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --paper: #f8fafc;
   --panel: #ffffff;
-  --primary: #0f766e;
-  --primary-dark: #115e59;
-  --accent: #b45309;
-  --blue: #2563eb;
-  --good: #15803d;
-  --bad: #b91c1c;
-  --shadow: 0 18px 45px rgba(23, 33, 43, 0.11);
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-soft: #dbeafe;
+  --accent: #22c55e;
+  --accent-soft: #dcfce7;
+  --good: #22c55e;
+  --bad: #ef4444;
+  --bad-soft: #fee2e2;
+  --shadow: 0 18px 45px rgba(15, 23, 42, 0.1);
+  --hover-shadow: 0 22px 55px rgba(37, 99, 235, 0.16);
 }
 
 * {
@@ -26,9 +29,7 @@ body {
   min-height: 100vh;
   font-family: "Inter", Arial, sans-serif;
   color: var(--ink);
-  background:
-    linear-gradient(130deg, rgba(15, 118, 110, 0.08), rgba(37, 99, 235, 0.06), rgba(180, 83, 9, 0.06)),
-    var(--paper);
+  background: var(--paper);
 }
 
 .app-shell {
@@ -50,7 +51,7 @@ body {
   border: 1px solid rgba(217, 225, 232, 0.84);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 12px 30px rgba(23, 33, 43, 0.08);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
   backdrop-filter: blur(12px);
 }
 
@@ -63,9 +64,10 @@ body {
 }
 
 .brand {
-  color: var(--primary-dark);
+  color: var(--primary);
   font-weight: 900;
   font-size: 1.1rem;
+  transition: color 160ms ease, transform 160ms ease;
 }
 
 .nav-links {
@@ -78,6 +80,13 @@ body {
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 800;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.brand:hover,
+.nav-links a:hover {
+  color: var(--primary-dark);
+  transform: translateY(-1px);
 }
 
 .hero {
@@ -93,9 +102,7 @@ body {
   padding: 42px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background:
-    linear-gradient(120deg, rgba(255, 255, 255, 0.96), rgba(235, 247, 244, 0.92)),
-    #ffffff;
+  background: var(--panel);
   box-shadow: var(--shadow);
 }
 
@@ -107,7 +114,7 @@ body {
 
 .eyebrow {
   margin: 0 0 10px;
-  color: var(--primary-dark);
+  color: var(--primary);
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0;
@@ -157,6 +164,8 @@ button {
   font: inherit;
   font-weight: 900;
   cursor: pointer;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
 }
 
 .primary-link {
@@ -165,13 +174,16 @@ button {
 
 .secondary-link,
 button.secondary {
-  color: var(--primary-dark);
-  background: #e4f2ef;
+  color: var(--primary);
+  background: var(--primary-soft);
+  box-shadow: none;
 }
 
 button:hover,
 .button-link:hover {
   background: var(--primary-dark);
+  box-shadow: var(--hover-shadow);
+  transform: translateY(-2px);
 }
 
 .secondary-link:hover,
@@ -191,12 +203,19 @@ button.secondary:hover {
   gap: 7px;
   align-items: center;
   padding: 8px 11px;
-  border: 1px solid rgba(15, 118, 110, 0.18);
+  border: 1px solid rgba(37, 99, 235, 0.18);
   border-radius: 999px;
-  color: var(--primary-dark);
+  color: var(--primary);
   background: rgba(255, 255, 255, 0.78);
   font-size: 0.86rem;
   font-weight: 900;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.trust-row span:hover {
+  border-color: rgba(37, 99, 235, 0.36);
+  background: #ffffff;
+  transform: translateY(-1px);
 }
 
 [data-lucide] {
@@ -231,6 +250,30 @@ button.secondary:hover {
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--line);
   border-radius: 8px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.score-card:hover,
+.risk-card:hover,
+.checker-panel:hover,
+.results-panel:hover,
+.phase:hover,
+.result-grid article:hover,
+.trust-card:hover,
+.score-details:hover,
+.assistant-panel:hover,
+.resume-builder-panel:hover,
+.tracker-panel:hover,
+.choice-card:hover,
+.feature-grid article:hover,
+.how-it-works div:hover,
+.problem-band:hover,
+.resume-preview:hover,
+.builder-form:hover,
+.module-strip article:hover {
+  border-color: rgba(37, 99, 235, 0.22);
+  box-shadow: var(--hover-shadow);
+  transform: translateY(-2px);
 }
 
 .score-card {
@@ -249,7 +292,7 @@ button.secondary:hover {
 
 #scoreValue {
   margin: 8px 0;
-  color: var(--primary-dark);
+  color: var(--good);
   font-size: 4.6rem;
   line-height: 1;
 }
@@ -263,17 +306,17 @@ button.secondary:hover {
   display: grid;
   gap: 4px;
   padding: 18px;
-  border: 1px solid rgba(180, 83, 9, 0.18);
+  border: 1px solid rgba(37, 99, 235, 0.16);
   border-radius: 8px;
-  background: #fff8ed;
+  background: #eff6ff;
 }
 
 .risk-card {
   display: grid;
   gap: 6px;
   padding: 18px;
-  border-color: rgba(185, 28, 28, 0.18);
-  background: #fff5f5;
+  border-color: rgba(239, 68, 68, 0.2);
+  background: #fef2f2;
 }
 
 .risk-card span {
@@ -289,24 +332,24 @@ button.secondary:hover {
 
 .risk-card p {
   margin: 0;
-  color: #6f2c2c;
+  color: #991b1b;
   line-height: 1.45;
   font-weight: 800;
 }
 
 .risk-card.medium-risk {
-  border-color: rgba(180, 83, 9, 0.24);
-  background: #fff8ed;
+  border-color: rgba(37, 99, 235, 0.2);
+  background: #eff6ff;
 }
 
 .risk-card.medium-risk strong,
 .risk-card.medium-risk p {
-  color: #74430d;
+  color: var(--primary-dark);
 }
 
 .risk-card.low-risk {
-  border-color: rgba(21, 128, 61, 0.22);
-  background: #f0f9f2;
+  border-color: rgba(34, 197, 94, 0.24);
+  background: var(--accent-soft);
 }
 
 .risk-card.low-risk strong,
@@ -315,13 +358,13 @@ button.secondary:hover {
 }
 
 .hero-proof strong {
-  color: var(--accent);
+  color: var(--primary);
   font-size: 2.3rem;
   line-height: 1;
 }
 
 .hero-proof span {
-  color: #674618;
+  color: #1e3a8a;
   line-height: 1.45;
   font-weight: 800;
 }
@@ -402,7 +445,7 @@ button.secondary:hover {
   display: grid;
   gap: 12px;
   padding: 24px;
-  box-shadow: 0 10px 28px rgba(23, 33, 43, 0.08);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
 }
 
 .choice-card svg,
@@ -419,12 +462,18 @@ button.secondary:hover {
 
 .choice-card a {
   width: fit-content;
-  color: var(--primary-dark);
+  color: var(--primary);
   font-weight: 900;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.choice-card a:hover {
+  color: var(--primary-dark);
+  transform: translateX(2px);
 }
 
 .featured-choice {
-  border-color: rgba(15, 118, 110, 0.35);
+  border-color: rgba(37, 99, 235, 0.35);
   box-shadow: var(--shadow);
 }
 
@@ -449,7 +498,7 @@ button.secondary:hover {
 
 .how-it-works span,
 .phase span {
-  color: var(--accent);
+  color: var(--primary);
   font-size: 0.82rem;
   font-weight: 900;
 }
@@ -466,8 +515,8 @@ button.secondary:hover {
 }
 
 .phase.active {
-  border-color: rgba(15, 118, 110, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.14);
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.14);
 }
 
 .phase h2 {
@@ -540,9 +589,9 @@ button.secondary:hover {
   min-height: 132px;
   margin-bottom: 0;
   padding: 22px;
-  border: 2px dashed rgba(15, 118, 110, 0.42);
+  border: 2px dashed rgba(37, 99, 235, 0.36);
   border-radius: 8px;
-  background: #f3faf8;
+  background: #eff6ff;
   text-align: center;
   cursor: pointer;
   transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
@@ -551,7 +600,7 @@ button.secondary:hover {
 .file-drop:hover,
 .file-drop.dragging {
   border-color: var(--primary);
-  background: #eef9f6;
+  background: #dbeafe;
   transform: translateY(-1px);
 }
 
@@ -564,7 +613,7 @@ button.secondary:hover {
 }
 
 .file-drop span {
-  color: var(--primary-dark);
+  color: var(--primary);
   font-size: 1.05rem;
   font-weight: 900;
 }
@@ -632,7 +681,7 @@ button.secondary:hover {
   width: 0%;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--accent), var(--primary));
+  background: linear-gradient(90deg, var(--primary), var(--accent));
   transition: width 260ms ease;
 }
 
@@ -677,7 +726,7 @@ select {
 textarea:focus,
 input:focus,
 select:focus {
-  outline: 3px solid rgba(15, 118, 110, 0.18);
+  outline: 3px solid rgba(37, 99, 235, 0.16);
   border-color: var(--primary);
 }
 
@@ -688,7 +737,7 @@ select:focus {
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #f8fbfa;
+  background: #f8fafc;
 }
 
 .builder-grid {
@@ -766,7 +815,7 @@ select:focus {
 
 .result-grid span {
   display: block;
-  color: var(--primary-dark);
+  color: var(--primary);
   font-size: 1.35rem;
   font-weight: 900;
 }
@@ -813,14 +862,14 @@ select:focus {
 
 .checklist span.pass {
   color: var(--good);
-  border-color: rgba(21, 128, 61, 0.22);
-  background: rgba(21, 128, 61, 0.07);
+  border-color: rgba(34, 197, 94, 0.24);
+  background: rgba(34, 197, 94, 0.1);
 }
 
 .checklist span.fail {
   color: var(--bad);
-  border-color: rgba(185, 28, 28, 0.22);
-  background: rgba(185, 28, 28, 0.07);
+  border-color: rgba(239, 68, 68, 0.24);
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .recommendations {
@@ -881,8 +930,8 @@ select:focus {
 .assistant-badge {
   padding: 8px 11px;
   border-radius: 999px;
-  color: var(--primary-dark);
-  background: #e4f2ef;
+  color: var(--primary);
+  background: var(--primary-soft);
   font-size: 0.84rem;
   font-weight: 900;
   white-space: nowrap;
