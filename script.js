@@ -43,6 +43,9 @@ const trackerList = document.querySelector("#trackerList");
 
 const scoreValue = document.querySelector("#scoreValue");
 const scoreStatus = document.querySelector("#scoreStatus");
+const riskStatus = document.querySelector("#riskStatus");
+const riskText = document.querySelector("#riskText");
+const riskCard = document.querySelector("#riskCard");
 const meterFill = document.querySelector("#meterFill");
 const summaryText = document.querySelector("#summaryText");
 const keywordScoreEl = document.querySelector("#keywordScore");
@@ -521,10 +524,19 @@ function renderAnalysis(report) {
 
   if (finalScore >= 80) {
     scoreStatus.textContent = "Excellent match";
+    riskStatus.textContent = "Low";
+    riskText.textContent = "Your resume looks likely to pass the first ATS screen for this role.";
+    riskCard.className = "risk-card low-risk";
   } else if (finalScore >= 60) {
     scoreStatus.textContent = "Good start";
+    riskStatus.textContent = "Medium";
+    riskText.textContent = "Your resume may pass, but missing keywords or weak sections could reduce visibility.";
+    riskCard.className = "risk-card medium-risk";
   } else {
     scoreStatus.textContent = "Needs optimization";
+    riskStatus.textContent = "High";
+    riskText.textContent = "Your resume will likely be rejected or ranked low unless you improve the match.";
+    riskCard.className = "risk-card high-risk";
   }
 
   summaryText.textContent = `Your resume matches ${keywordResult.matched.length} important job keywords and includes ${sectionResult.found.length} of ${expectedSections.length} recommended sections.`;
@@ -572,11 +584,11 @@ function scheduleLiveAnalysis() {
 
 function buildReportText() {
   if (!latestReport) {
-    return "Run the ATS Resume Checker first to generate a report.";
+    return "Run the HireReady ATS check first to generate a report.";
   }
 
   return [
-    "ATS Resume Checker Report",
+    "HireReady ATS Report",
     `Overall Score: ${latestReport.finalScore}`,
     `Keyword Match: ${latestReport.keywordResult.score}%`,
     `Section Health: ${latestReport.sectionResult.score}%`,
@@ -653,7 +665,7 @@ function downloadGeneratedResume() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "resumeiq-resume.txt";
+  link.download = "hireready-resume.txt";
   link.click();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
@@ -865,6 +877,9 @@ function clearForm() {
   setExtractionStatus("Ready to import a resume.", 0);
   scoreValue.textContent = "0";
   scoreStatus.textContent = "Add your resume to begin";
+  riskStatus.textContent = "Unknown";
+  riskText.textContent = "Run a scan to see whether your resume is ready for ATS filters.";
+  riskCard.className = "risk-card";
   meterFill.style.width = "0%";
   keywordScoreEl.textContent = "0%";
   sectionScoreEl.textContent = "0%";

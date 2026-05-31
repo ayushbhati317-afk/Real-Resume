@@ -1,6 +1,6 @@
-# ATS Resume Checker
+# HireReady
 
-A browser-based ATS resume checker with:
+A browser-based resume product with:
 
 - Formatted resume import for PDF, DOCX, text, HTML, CSV, and images with OCR
 - Resume scoring for keyword match, sections, and ATS-friendly formatting

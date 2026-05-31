@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResumeIQ - Resume Builder and ATS Checker</title>
+  <title>HireReady - Resume Builder, ATS Checker, and Interview Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body>
   <main class="app-shell">
     <nav class="top-nav" aria-label="Primary navigation">
-      <a class="brand" href="#top">ResumeIQ</a>
+      <a class="brand" href="#top">HireReady</a>
       <div class="nav-links">
         <a href="#builder">Create Resume</a>
         <a href="#checker">ATS Checker</a>
@@ -22,15 +22,15 @@
 
     <section class="hero product-hero" id="top">
       <div class="hero-copy">
-        <p class="eyebrow">Resume builder + ATS optimization</p>
-        <h1>Check if your resume gets rejected by ATS in seconds</h1>
+        <p class="eyebrow">Resume builder + ATS checker + interview tracker</p>
+        <h1>Check if your resume passes ATS filters</h1>
         <p class="intro">
-          Build a clean resume, compare it with a job description, find missing keywords,
-          and get interview-ready guidance in one focused workspace.
+          Get your resume score, keyword match, missing skills, and improvement tips in seconds.
+          Then build, optimize, track, and prepare for the jobs you want.
         </p>
         <div class="hero-actions">
-          <a class="button-link primary-link" href="#checker">Check My Resume</a>
-          <a class="button-link secondary-link" href="#builder">Create Resume</a>
+          <a class="button-link primary-link" href="#builder"><i data-lucide="file-plus-2"></i>Create Resume</a>
+          <a class="button-link secondary-link" href="#checker"><i data-lucide="scan-search"></i>Check ATS Score</a>
         </div>
         <div class="trust-row" aria-label="Trust signals">
           <span><i data-lucide="shield-check"></i> Private by design</span>
@@ -43,6 +43,11 @@
           <span class="score-label">ATS Score</span>
           <strong id="scoreValue">0</strong>
           <span id="scoreStatus">Add your resume to begin</span>
+        </div>
+        <div class="risk-card" id="riskCard">
+          <span>Resume Risk</span>
+          <strong id="riskStatus">Unknown</strong>
+          <p id="riskText">Run a scan to see whether your resume is ready for ATS filters.</p>
         </div>
         <div class="hero-proof">
           <strong>75%</strong>
@@ -57,9 +62,27 @@
         <h2>Most resumes fail because they are not written for the job posting.</h2>
       </div>
       <p>
-        ResumeIQ helps you create, optimize, and track your job search with one practical flow:
+        HireReady helps you create, optimize, and track your job search with one practical flow:
         build the resume, check it against the job, improve the weak sections, then prepare for interviews.
       </p>
+    </section>
+
+    <section class="module-strip" aria-label="Product modules">
+      <article>
+        <i data-lucide="file-text"></i>
+        <span>Module 1</span>
+        <strong>Resume Builder</strong>
+      </article>
+      <article>
+        <i data-lucide="scan-line"></i>
+        <span>Module 2</span>
+        <strong>ATS Checker</strong>
+      </article>
+      <article>
+        <i data-lucide="calendar-check"></i>
+        <span>Module 3</span>
+        <strong>Interview Tracker</strong>
+      </article>
     </section>
 
     <section class="choice-grid" aria-label="Main product options">
