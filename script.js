@@ -20,6 +20,26 @@ const assistantChat = document.querySelector("#assistantChat");
 const assistantInput = document.querySelector("#assistantInput");
 const askAssistantButton = document.querySelector("#askAssistantButton");
 const promptChips = document.querySelectorAll(".prompt-chips button");
+const generateResumeButton = document.querySelector("#generateResumeButton");
+const sendToCheckerButton = document.querySelector("#sendToCheckerButton");
+const downloadResumeButton = document.querySelector("#downloadResumeButton");
+const resumePreview = document.querySelector("#resumePreview");
+const builderName = document.querySelector("#builderName");
+const builderEmail = document.querySelector("#builderEmail");
+const builderPhone = document.querySelector("#builderPhone");
+const builderLocation = document.querySelector("#builderLocation");
+const builderTarget = document.querySelector("#builderTarget");
+const builderSkills = document.querySelector("#builderSkills");
+const builderSummary = document.querySelector("#builderSummary");
+const builderExperience = document.querySelector("#builderExperience");
+const builderProjects = document.querySelector("#builderProjects");
+const builderEducation = document.querySelector("#builderEducation");
+const trackerCompany = document.querySelector("#trackerCompany");
+const trackerRole = document.querySelector("#trackerRole");
+const trackerStage = document.querySelector("#trackerStage");
+const trackerNext = document.querySelector("#trackerNext");
+const addTrackerButton = document.querySelector("#addTrackerButton");
+const trackerList = document.querySelector("#trackerList");
 
 const scoreValue = document.querySelector("#scoreValue");
 const scoreStatus = document.querySelector("#scoreStatus");
@@ -28,6 +48,9 @@ const summaryText = document.querySelector("#summaryText");
 const keywordScoreEl = document.querySelector("#keywordScore");
 const sectionScoreEl = document.querySelector("#sectionScore");
 const formatScoreEl = document.querySelector("#formatScore");
+const keywordMeter = document.querySelector("#keywordMeter");
+const sectionMeter = document.querySelector("#sectionMeter");
+const formatMeter = document.querySelector("#formatMeter");
 const missingKeywordsEl = document.querySelector("#missingKeywords");
 const recommendationsEl = document.querySelector("#recommendations");
 const checklistEl = document.querySelector("#checklist");
@@ -42,6 +65,8 @@ let latestReport = null;
 let liveTimer = null;
 let isExtracting = false;
 let assistantHistory = [];
+let generatedResumeText = "";
+let trackedApplications = [];
 
 if (window.pdfjsLib) {
   window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
@@ -476,6 +501,12 @@ function updateTextStats() {
   jobQuality.textContent = jobCount >= 40 ? "Ready for keyword scan" : "Add more job description text";
 }
 
+function setMeter(element, score) {
+  if (element) {
+    element.style.width = `${Math.max(0, Math.min(100, score))}%`;
+  }
+}
+
 function renderAnalysis(report) {
   const { finalScore, keywordResult, sectionResult, formatResult, tips } = report;
 
@@ -484,6 +515,9 @@ function renderAnalysis(report) {
   keywordScoreEl.textContent = `${keywordResult.score}%`;
   sectionScoreEl.textContent = `${sectionResult.score}%`;
   formatScoreEl.textContent = `${formatResult.score}%`;
+  setMeter(keywordMeter, keywordResult.score);
+  setMeter(sectionMeter, sectionResult.score);
+  setMeter(formatMeter, formatResult.score);
 
   if (finalScore >= 80) {
     scoreStatus.textContent = "Excellent match";
@@ -554,6 +588,123 @@ function buildReportText() {
     "Recommendations:",
     ...latestReport.tips.map((tip) => `- ${tip}`)
   ].join("\n");
+}
+
+function cleanLines(text) {
+  return text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join("\n");
+}
+
+function generateResumeFromBuilder() {
+  const name = builderName.value.trim() || "Your Name";
+  const email = builderEmail.value.trim() || "email@example.com";
+  const phone = builderPhone.value.trim() || "Phone";
+  const location = builderLocation.value.trim() || "Location";
+  const target = builderTarget.value.trim() || "Target Role";
+  const skills = builderSkills.value.trim() || "Communication, problem solving, teamwork";
+  const summary = builderSummary.value.trim() || `Motivated ${target} candidate with practical skills, strong ownership, and a focus on measurable results.`;
+  const experience = cleanLines(builderExperience.value) || "- Add 2-4 achievement bullets with action, tool, and result.";
+  const projects = cleanLines(builderProjects.value) || "- Add a project that proves your strongest job-related skills.";
+  const education = cleanLines(builderEducation.value) || "Education details";
+
+  generatedResumeText = [
+    name,
+    `${email} | ${phone} | ${location}`,
+    "",
+    "Summary",
+    summary,
+    "",
+    "Target Role",
+    target,
+    "",
+    "Skills",
+    skills,
+    "",
+    "Experience",
+    experience,
+    "",
+    "Projects",
+    projects,
+    "",
+    "Education",
+    education
+  ].join("\n");
+
+  resumePreview.textContent = generatedResumeText;
+  return generatedResumeText;
+}
+
+function sendGeneratedResumeToChecker() {
+  const text = generatedResumeText || generateResumeFromBuilder();
+  resumeInput.value = text;
+  fileStatus.textContent = "Resume builder content loaded";
+  setExtractionStatus("Builder resume is ready for ATS scoring.", 100);
+  updateTextStats();
+  document.querySelector("#checker").scrollIntoView({ behavior: "smooth", block: "start" });
+  scheduleLiveAnalysis();
+}
+
+function downloadGeneratedResume() {
+  const text = generatedResumeText || generateResumeFromBuilder();
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "resumeiq-resume.txt";
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function renderTracker() {
+  trackerList.innerHTML = "";
+
+  if (!trackedApplications.length) {
+    const empty = document.createElement("span");
+    empty.textContent = "No interviews tracked yet.";
+    trackerList.appendChild(empty);
+    return;
+  }
+
+  trackedApplications.forEach((item) => {
+    const row = document.createElement("article");
+    const details = document.createElement("div");
+    const title = document.createElement("strong");
+    const next = document.createElement("small");
+    const stage = document.createElement("small");
+
+    title.textContent = `${item.role} at ${item.company}`;
+    next.textContent = `Next: ${item.nextAction}`;
+    stage.textContent = item.stage;
+    details.append(title, document.createElement("br"), next);
+    row.append(details, stage);
+    trackerList.appendChild(row);
+  });
+}
+
+function addTrackerItem() {
+  const company = trackerCompany.value.trim();
+  const role = trackerRole.value.trim();
+  const nextAction = trackerNext.value.trim() || "Follow up";
+
+  if (!company || !role) {
+    return;
+  }
+
+  trackedApplications.unshift({
+    company,
+    role,
+    stage: trackerStage.value,
+    nextAction
+  });
+
+  trackedApplications = trackedApplications.slice(0, 8);
+  trackerCompany.value = "";
+  trackerRole.value = "";
+  trackerNext.value = "";
+  renderTracker();
 }
 
 function appendChatMessage(sender, text, options = {}) {
@@ -718,6 +869,9 @@ function clearForm() {
   keywordScoreEl.textContent = "0%";
   sectionScoreEl.textContent = "0%";
   formatScoreEl.textContent = "0%";
+  setMeter(keywordMeter, 0);
+  setMeter(sectionMeter, 0);
+  setMeter(formatMeter, 0);
   summaryText.textContent = "Your results will appear after analysis.";
   missingKeywordsEl.innerHTML = "<span>No analysis yet</span>";
   checklistEl.innerHTML = "<span>Run a check to see readiness items.</span>";
@@ -834,6 +988,10 @@ clearButton.addEventListener("click", clearForm);
 sampleButton.addEventListener("click", loadSample);
 copyButton.addEventListener("click", copyTips);
 downloadButton.addEventListener("click", downloadReport);
+generateResumeButton.addEventListener("click", generateResumeFromBuilder);
+sendToCheckerButton.addEventListener("click", sendGeneratedResumeToChecker);
+downloadResumeButton.addEventListener("click", downloadGeneratedResume);
+addTrackerButton.addEventListener("click", addTrackerItem);
 askAssistantButton.addEventListener("click", () => askAssistant());
 assistantInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -844,3 +1002,7 @@ promptChips.forEach((button) => {
   button.addEventListener("click", () => askAssistant(button.dataset.prompt));
 });
 updateTextStats();
+renderTracker();
+if (window.lucide) {
+  window.lucide.createIcons();
+}
