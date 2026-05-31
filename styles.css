@@ -1009,6 +1009,191 @@ select:focus {
   margin-top: 12px;
 }
 
+.launch-cta {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 360px;
+  overflow: hidden;
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px 8px 0 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.82)),
+    var(--panel);
+}
+
+.glow-bars {
+  position: absolute;
+  inset: auto 6% 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 14px;
+  height: 72%;
+  pointer-events: none;
+  opacity: 0.88;
+}
+
+.glow-bars span {
+  align-self: end;
+  height: 100%;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(180deg, rgba(37, 99, 235, 0), rgba(37, 99, 235, 0.18), rgba(34, 197, 94, 0.12));
+  filter: blur(1px);
+  animation: glowRise 4.6s ease-in-out infinite;
+}
+
+.glow-bars span:nth-child(2n) {
+  height: 84%;
+  animation-delay: 400ms;
+}
+
+.glow-bars span:nth-child(3n) {
+  height: 68%;
+  animation-delay: 800ms;
+}
+
+.launch-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  max-width: 720px;
+  padding: 34px 18px;
+  text-align: center;
+}
+
+.launch-content h2 {
+  max-width: 680px;
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+}
+
+.launch-content p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.site-footer {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(240px, 1.25fr) repeat(4, minmax(120px, 1fr));
+  gap: 34px;
+  overflow: hidden;
+  padding: 76px 64px 86px;
+  border-radius: 0 0 8px 8px;
+  color: #e5e7eb;
+  background: #08090d;
+}
+
+.site-footer::after {
+  content: "HireReady";
+  position: absolute;
+  left: 50%;
+  bottom: -42px;
+  transform: translateX(-50%);
+  color: rgba(37, 99, 235, 0.07);
+  font-size: clamp(4rem, 14vw, 12rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  pointer-events: none;
+}
+
+.footer-brand,
+.footer-column {
+  position: relative;
+  z-index: 1;
+}
+
+.footer-logo {
+  display: inline-flex;
+  gap: 9px;
+  align-items: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.footer-logo span {
+  width: 26px;
+  height: 18px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow: 0 0 24px rgba(37, 99, 235, 0.48);
+}
+
+.footer-brand p {
+  max-width: 260px;
+  margin: 18px 0 22px;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.social-row {
+  display: flex;
+  gap: 12px;
+}
+
+.social-row a {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 8px;
+  color: #f8fafc;
+  text-decoration: none;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.social-row a:hover {
+  color: #ffffff;
+  background: rgba(37, 99, 235, 0.22);
+  transform: translateY(-2px);
+}
+
+.footer-column {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+}
+
+.footer-column h3 {
+  margin: 0 0 8px;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.footer-column a {
+  color: #f8fafc;
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.footer-column a:hover {
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+@keyframes glowRise {
+  0%,
+  100% {
+    opacity: 0.62;
+    transform: scaleY(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
 @keyframes typingDots {
   0% {
     content: "";
@@ -1039,6 +1224,15 @@ select:focus {
 
   .tracker-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 48px 28px 72px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1085,5 +1279,18 @@ select:focus {
   .builder-form,
   .resume-preview {
     padding: 18px;
+  }
+
+  .launch-cta {
+    min-height: 300px;
+  }
+
+  .glow-bars {
+    gap: 8px;
+    inset-inline: 0;
+  }
+
+  .site-footer {
+    grid-template-columns: 1fr;
   }
 }
